@@ -2,6 +2,12 @@
 
 An AI-enhanced structured invoice processing engine designed to replace manual data entry with structured, assisted input. This system is tailored for real-world workflows like healthcare inventory, evolving from an OCR-first approach to robust structured data ingestion (GST QR / IRN).
 
+## Screenshots
+
+| Input Interface | Assisted Preview & Editing |
+| :---: | :---: |
+| ![Home Interface](screenshots/Home-Structured-Invoice-Processing-Engine.png) | ![Invoice Preview](screenshots/Mock_Result_Structured-Invoice-Processing-Engine.png) |
+
 ## Features
 
 - **Structured Inputs**: Ingest data directly via GST QR strings (JWT) or IRN (Invoice Reference Number).

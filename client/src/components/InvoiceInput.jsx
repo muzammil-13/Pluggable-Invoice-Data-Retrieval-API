@@ -14,8 +14,9 @@ const InvoiceInput = ({ onFetchInvoice }) => {
       <h2 className="text-xl font-bold mb-4">Input Invoice Data</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1">IRN (Invoice Reference Number)</label>
+          <label htmlFor="irn-input" className="block text-sm font-medium mb-1">IRN (Invoice Reference Number)</label>
           <input
+            id="irn-input"
             type="text"
             className="w-full p-2 border rounded"
             value={irn}
@@ -24,8 +25,9 @@ const InvoiceInput = ({ onFetchInvoice }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">QR Data (JWT or raw string)</label>
+          <label htmlFor="qr-input" className="block text-sm font-medium mb-1">QR Data (JWT or raw string)</label>
           <textarea
+            id="qr-input"
             className="w-full p-2 border rounded"
             rows="3"
             value={qrData}
