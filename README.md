@@ -289,3 +289,5 @@ This project is intentionally scoped to solve  **one core problem well** :
 > “Given an invoice, return structured, reliable data.”
 
 Everything else is built around that.
+
+---
