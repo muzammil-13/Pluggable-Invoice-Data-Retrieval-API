@@ -1,0 +1,91 @@
+INFO:     Will watch for changes in these directories: ['C:\\Users\\muzam\\Documents\\Contribute\\GSoC-26\\Pluggable-Invoice-Data-Retrieval-API']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [24704] using WatchFiles
+INFO:     Started server process [3928]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'tests\test_e2e.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3928]
+WARNING:  WatchFiles detected changes in 'tests\test_e2e.py'. Reloading...
+INFO:     Started server process [3448]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\muzam\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\muzam\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 650, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\muzam\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\muzam\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\muzam\Documents\Contribute\GSoC-26\Pluggable-Invoice-Data-Retrieval-API\.venv\Lib\site-packages\starlette\routing.py", line 741, in lifespan
+    await receive()
+  File "C:\Users\muzam\Documents\Contribute\GSoC-26\Pluggable-Invoice-Data-Retrieval-API\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 137, in receive
+    return await self.receive_queue.get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\muzam\AppData\Local\Programs\Python\Python311\Lib\asyncio\queues.py", line 158, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+INFO:     Started server process [9344]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'tests\test_e2e.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9344]
+INFO:     Started server process [19872]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'tests\test_e2e.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [19872]
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "C:\Users\muzam\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\spawn.py", line 120, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\muzam\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\spawn.py", line 130, in _main
+    self = reduction.pickle.load(from_parent)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\muzam\Documents\Contribute\GSoC-26\Pluggable-Invoice-Data-Retrieval-API\.venv\Lib\site-packages\uvicorn\__init__.py", line 1, in <module>
+    from uvicorn.config import Config
+  File "C:\Users\muzam\Documents\Contribute\GSoC-26\Pluggable-Invoice-Data-Retrieval-API\.venv\Lib\site-packages\uvicorn\config.py", line 16, in <module>
+    import click
+  File "C:\Users\muzam\Documents\Contribute\GSoC-26\Pluggable-Invoice-Data-Retrieval-API\.venv\Lib\site-packages\click\__init__.py", line 10, in <module>
+    from .core import Argument as Argument
+  File "C:\Users\muzam\Documents\Contribute\GSoC-26\Pluggable-Invoice-Data-Retrieval-API\.venv\Lib\site-packages\click\core.py", line 21, in <module>
+    from . import types
+  File "C:\Users\muzam\Documents\Contribute\GSoC-26\Pluggable-Invoice-Data-Retrieval-API\.venv\Lib\site-packages\click\types.py", line 15, in <module>
+    from .exceptions import BadParameter
+  File "<frozen importlib._bootstrap>", line 1178, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1140, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1080, in _find_spec
+  File "<frozen importlib._bootstrap_external>", line 1504, in find_spec
+  File "<frozen importlib._bootstrap_external>", line 1476, in _get_spec
+  File "<frozen importlib._bootstrap_external>", line 1645, in find_spec
+  File "<frozen importlib._bootstrap_external>", line 161, in _path_isfile
+  File "<frozen importlib._bootstrap_external>", line 153, in _path_is_mode_type
+  File "<frozen importlib._bootstrap_external>", line 147, in _path_stat
+KeyboardInterrupt
+INFO:     Stopping reloader process [24704]

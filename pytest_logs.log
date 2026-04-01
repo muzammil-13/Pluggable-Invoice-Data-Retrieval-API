@@ -1,0 +1,56 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.0, pytest-8.2.2, pluggy-1.6.0
+rootdir: C:\Users\muzam\Documents\Contribute\GSoC-26\Pluggable-Invoice-Data-Retrieval-API
+plugins: anyio-4.13.0, base-url-2.1.0, playwright-0.5.2
+collected 1 item
+
+tests\test_e2e.py F                                                      [100%]
+
+================================== FAILURES ===================================
+_________________________ test_invoice_data_endpoint __________________________
+
+api_request_context = <playwright._impl._fetch.APIRequestContext object at 0x000002A95C5D5010>
+live_server = 'http://127.0.0.1:8008'
+
+    def test_invoice_data_endpoint(api_request_context: APIRequestContext, live_server):
+        """
+        Tests the /api/v1/invoice-data endpoint using Playwright's request context.
+        This simulates a client application making a POST request to the running API.
+        """
+        # A mock Base64 string for a dummy file. The content doesn't matter for this test
+        # as the backend logic is currently mocked.
+        mock_base64_file = "data:application/pdf;base64,JVBERi0xLjQKJ..."
+    
+        response = api_request_context.post(
+            f"{live_server}/api/v1/invoice-data",
+            data={"file": mock_base64_file, "provider": "mock"},
+        )
+    
+        # Use Playwright's built-in assertions to check the response
+        expect(response).to_be_ok()
+    
+        response_json = response.json()
+        assert response_json["source"] == "gsp"
+>       assert response_json["invoice_number"] == "MSD-2024-0789"
+E       AssertionError: assert 'INV-959E6557' == 'MSD-2024-0789'
+E         
+E         - MSD-2024-0789
+E         + INV-959E6557
+
+tests\test_e2e.py:55: AssertionError
+---------------------------- Captured stderr setup ----------------------------
+INFO:     Started server process [18452]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8008 (Press CTRL+C to quit)
+---------------------------- Captured stdout call -----------------------------
+INFO:     127.0.0.1:52050 - "POST /api/v1/invoice-data HTTP/1.1" 200 OK
+============================== warnings summary ===============================
+.venv\Lib\site-packages\starlette\formparsers.py:12
+  C:\Users\muzam\Documents\Contribute\GSoC-26\Pluggable-Invoice-Data-Retrieval-API\.venv\Lib\site-packages\starlette\formparsers.py:12: PendingDeprecationWarning: Please use `import python_multipart` instead.
+    import multipart
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_e2e.py::test_invoice_data_endpoint - AssertionError: assert...
+======================== 1 failed, 1 warning in 4.24s =========================

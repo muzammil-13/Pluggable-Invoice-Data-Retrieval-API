@@ -1,8 +1,9 @@
 import multiprocessing
 import time
+from typing import Generator
 import uvicorn
 import pytest
-from playwright.sync_api import APIRequestContext, expect
+from playwright.sync_api import Playwright, APIRequestContext, expect
 
 from app.main import app
 
@@ -25,6 +26,13 @@ def live_server():
     yield BASE_URL
     proc.terminate()
 
+@pytest.fixture
+def api_request_context(playwright: Playwright) -> Generator[APIRequestContext, None, None]:
+    """Fixture to create and cleanly dispose of a Playwright APIRequestContext."""
+    request_context = playwright.request.new_context()
+    yield request_context
+    request_context.dispose()
+
 def test_invoice_data_endpoint(api_request_context: APIRequestContext, live_server):
     """
     Tests the /api/v1/invoice-data endpoint using Playwright's request context.
@@ -44,8 +52,10 @@ def test_invoice_data_endpoint(api_request_context: APIRequestContext, live_serv
 
     response_json = response.json()
     assert response_json["source"] == "gsp"
+    assert "invoice_number" in response_json
     assert "INV-" in response_json["invoice_number"]
-    assert len(response_json["items"]) == 1
+    assert len(response_json["items"]) == 3
     item = response_json["items"][0]
-    assert item["name"] == "Mocked Paracetamol 500mg"
+    assert item["name"] == "Paracetamol 500mg (10x10)"
+    assert item["quantity"] == 100
     assert response_json["confidence"] == 0.95

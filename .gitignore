@@ -6,3 +6,4 @@ app/services/__pycache__
 tests/__pycache__
 app/adapters/__pycache__
 .pytest_cache
+__pycache__
