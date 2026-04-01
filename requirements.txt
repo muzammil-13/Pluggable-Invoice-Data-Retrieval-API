@@ -17,3 +17,10 @@ python-jose[cryptography]~=3.3.0
 pytest~=8.2.2
 playwright~=1.44.0
 pytest-playwright~=0.5.0
+
+## for sample pdf creation
+# PDF Generation
+reportlab==4.2.5
+
+# QR Code Generation
+qrcode[pil]==7.4.2
