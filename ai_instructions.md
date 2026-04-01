@@ -1,268 +1,225 @@
-# 🤖 AI Development Instructions: Smart Receipt Uploader → Structured Invoice Engine
+# 🤖 AI Instructions for Development
 
-## 🎯 Goal
-
-Upgrade this project from an OCR-based receipt tool into a **structured invoice processing engine** aligned with real-world systems like healthcare inventory workflows.
-
-Focus:
-- Move away from OCR-first approach
-- Introduce structured data ingestion (GST QR / IRN / APIs)
-- Build a clean pipeline: **Invoice → Structured Data → Actionable UI**
+## Invoice Data Retrieval System (GSoC 2026)
 
 ---
 
-## 🧠 Core Principle
+## 🎯 Purpose
 
-> AI is a coding assistant, NOT the decision maker.
+This document guides AI-assisted development for this project.
 
-- All architecture, flow, and decisions must be human-defined
-- AI should only assist in:
-  - writing boilerplate
-  - generating test cases
-  - suggesting optimizations
+The goal is to ensure that any AI-generated code or suggestions:
 
----
-
-## 🔄 System Evolution Plan
-
-### Phase 1: Refactor Input Layer
-
-#### Current:
-- Image/PDF upload
-- OCR extraction (Tesseract/EasyOCR)
-
-#### Target:
-- Accept structured inputs:
-  - GST QR string (JWT)
-  - IRN (Invoice Reference Number)
-  - Mock JSON (for development)
-
-#### Tasks:
-- Create new API endpoint:
-```
-
-POST /invoice/parse
-
-````
-- Input:
-```json
-{
-  "irn": "string",
-  "qr_data": "string"
-}
-````
-
-* Output:
-
-  ```json
-  {
-    "supplier": "",
-    "invoice_number": "",
-    "date": "",
-    "items": [
-      {
-        "name": "",
-        "quantity": 0,
-        "batch": "",
-        "expiry": ""
-      }
-    ]
-  }
-  ```
+* align with project architecture
+* follow the API-first design
+* remain simple, modular, and production-aware
+* do not introduce unnecessary complexity
 
 ---
 
-### Phase 2: Mock Data Engine (IMPORTANT)
+## 🧠 Project Context
 
-Since real GST APIs may not be accessible:
+This project builds a **pluggable invoice data retrieval system** for healthcare workflows.
 
-* Build a mock service:
+Core objective:
 
-  ```
-  /services/mock_invoice_service.py
-  ```
-
-* AI Task:
-
-  * Generate realistic invoice JSON datasets
-  * Cover edge cases:
-
-    * missing fields
-    * invalid formats
-    * multiple items
+> Given an invoice (PDF/image), return structured invoice data using IRN-based retrieval as the primary method.
 
 ---
 
-### Phase 3: Data Mapping Layer
+## 🧩 System Architecture
 
-Create transformation logic:
+The system follows a layered approach:
 
-```
-invoice → internal schema
-```
+1. QR extraction → JWT decoding → IRN
+2. IRN-based retrieval via GST/GSP APIs
+3. Adapter-based provider system
+4. Fallback parsing (only if needed)
+5. Unified API response
 
-Example:
+AI-generated code must respect this architecture.
 
-* normalize item names
-* validate quantity
-* handle missing expiry/batch
+---
 
-#### File:
+## ⚠️ Core Constraints
 
-```
-/services/invoice_mapper.py
+### 1. API-first approach
+
+* Do NOT default to OCR-first solutions
+* IRN-based retrieval is the primary path
+
+---
+
+### 2. Keep it pluggable
+
+* Avoid hardcoding provider logic
+* Use adapter-based design
+
+---
+
+### 3. Avoid overengineering
+
+* No unnecessary microservices
+* No heavy frameworks beyond requirement
+
+---
+
+### 4. Python-first backend
+
+* Use Python for all core logic
+* Prefer lightweight frameworks (FastAPI or minimal service layer)
+
+---
+
+## 🧱 Coding Guidelines
+
+### General
+
+* Write modular, readable functions
+* Use clear naming (no abbreviations)
+* Add docstrings for key functions
+
+---
+
+### Structure
+
+Recommended structure:
+
+```id=
+app/
+  api/
+  services/
+  adapters/
+  utils/
 ```
 
 ---
 
-### Phase 4: UI Upgrade (React)
+### API Design
 
-#### Add new flow:
-
-1. Input IRN / QR
-2. Click "Fetch Invoice"
-3. Display:
-
-   * structured invoice preview
-   * editable fields
-
-#### Components:
-
-* `InvoiceInput.jsx`
-* `InvoicePreview.jsx`
-* `EditableTable.jsx`
+* Use REST endpoints
+* Accept file input (PDF/image)
+* Return structured JSON
 
 ---
 
-### Phase 5: Assisted Workflow (NOT FULL AUTO)
+### Error Handling
 
-Important:
+* Always handle:
+  * missing QR
+  * invalid JWT
+  * API failures
 
-> Do NOT auto-save blindly.
-
-Instead:
-
-* Pre-fill fields
-* Allow user edits
-* Add “Confirm & Save” step
+Return meaningful responses, not crashes.
 
 ---
 
-### Phase 6: Optional External API Integration
+## 🔌 Adapter Pattern Rules
 
-ONLY after mock works:
-
-* Add pluggable API layer:
-
-```
-/services/invoice_provider.py
-```
-
-* Design interface:
+All provider integrations must follow:
 
 ```python
-class InvoiceProvider:
-    def fetch_invoice(irn: str) -> dict:
-        pass
+class GSPAdapter:
+    def fetch_invoice(self, irn: str) -> dict:
+        raise NotImplementedError
+```
+
+* No direct API calls in core logic
+* All providers must be interchangeable
+
+---
+
+## 🔄 Fallback Logic Rules
+
+Fallback parsing should:
+
+* only trigger when IRN/API fails
+* not replace primary logic
+* be clearly marked in response (`source: fallback`)
+
+---
+
+## 📦 Output Format (Strict)
+
+All responses must follow:
+
+```json
+{
+  "source": "irn | gsp | fallback",
+  "invoice_number": "...",
+  "items": [],
+  "confidence": 0.0
+}
 ```
 
 ---
 
-### Phase 7: Testing (HIGH PRIORITY)
+## ❌ What AI should NOT do
 
-#### Backend:
-
-* Use pytest
-* Test:
-
-  * parsing
-  * mapping
-  * edge cases
-
-#### Frontend:
-
-* Add basic interaction tests
+* Do NOT introduce UI/frontend code
+* Do NOT rewrite entire architecture
+* Do NOT use heavy ML models unless explicitly required
+* Do NOT bypass adapter pattern
+* Do NOT hardcode credentials or API keys
 
 ---
 
-## 🧱 Folder Structure (Target)
+## ✅ What AI SHOULD focus on
 
-```
-server/
- ├── main.py
- ├── routes/
- │    └── invoice.py
- ├── services/
- │    ├── mock_invoice_service.py
- │    ├── invoice_mapper.py
- │    └── invoice_provider.py
- └── models/
-
-client/
- ├── components/
- │    ├── InvoiceInput.jsx
- │    ├── InvoicePreview.jsx
- │    └── EditableTable.jsx
- └── pages/
-```
+* QR extraction logic
+* JWT decoding
+* clean API endpoints
+* adapter implementations
+* validation and error handling
 
 ---
 
-## ⚙️ AI Usage Guidelines
+## 🧪 Testing Expectations
 
-### ✅ Use AI for:
+AI-generated code should include:
 
-* generating API boilerplate
-* writing test cases
-* suggesting UI structure
-* refactoring repetitive code
-
-### ❌ Do NOT use AI for:
-
-* architecture decisions
-* blindly generating full features
-* copying large chunks without review
+* basic test cases
+* sample inputs (PDF/image)
+* edge case handling
 
 ---
 
-## 🧪 Validation Checklist
+## 💡 Development Philosophy
 
-Before marking any feature complete:
-
-* [ ] API returns structured JSON
-* [ ] UI displays editable invoice data
-* [ ] Edge cases handled (missing fields)
-* [ ] No OCR dependency for core flow
-* [ ] Code is readable and modular
+* Build small, test quickly
+* Prefer working prototype over perfect design
+* Keep everything simple and extensible
 
 ---
 
-## 🚀 End Vision
+## ⚡ Final Instruction
 
-This project should evolve into:
+When generating code, always ask:
 
-> A modular invoice processing system that can plug into real-world workflows like healthcare inventory, replacing manual data entry with structured, assisted input.
+> “Does this align with IRN-first, API-first, pluggable design?”
 
----
-
-## 🧭 Future Extensions
-
-* CARE HMIS integration (inventory APIs)
-* Multi-invoice batch processing
-* Analytics dashboard (sales, stock trends)
-* Authentication & user roles
-* Export to ERP systems
+If not, simplify and correct.
 
 ---
 
-## 📝 Final Note
+# 🚀 Usage
 
-Keep the system:
+This file is intended for:
 
-* simple
-* modular
-* demoable
+* AI coding assistants
+* contributors
+* future maintainers
 
-Shipping a small working flow is better than designing a perfect system that never runs.
+---
 
-```
+## 🧠 Reminder
+
+This project solves a  **real operational problem** , not a demo.
+
+Focus on:
+
+* reliability
+* simplicity
+* integration readiness
+
+---
